@@ -1,4 +1,4 @@
-# Melanoma Detection with Pseudo-Labeling
+# Melanoma Detection with Pseudo-Annotations
 
 A deep learning project for melanoma detection using U-Net architecture with pseudo-labeling technique for semi-supervised learning. This implementation uses PyTorch and is designed to work with both labeled and unlabeled melanoma images.
 
