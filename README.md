@@ -196,17 +196,6 @@ Feel free to contribute to this project by:
 
 This project is available under the MIT License.
 
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@software{melanoma_pseudo_annotation,
-  title = {Melanoma Detection with Pseudo-Labeling},
-  year = {2024},
-  description = {A semi-supervised learning approach for melanoma detection using U-Net and pseudo-labeling}
-}
-```
 
 ## Contact
 
