@@ -20,12 +20,16 @@ pip install torch torchvision opencv-python pillow scikit-learn numpy matplotlib
 ### Directory Setup: ###
 Create the following directory structure:
 ```angular2html
-Copyyour_project/
-├── melanoma_detection.py  (the code above)
-├── images/              (your melanoma images)
-├── masks/               (your segmentation masks)
-├── checkpoints/         (will be created automatically)
-└── predictions/         (will be created automatically)
+melanoma-pseudo-annotation/
+├── enhanced.py                  # The main code file containing the implementation
+├── data/
+│   ├── labeled_images/          # Directory for labeled images (input for training)
+│   ├── labeled_masks/           # Directory for corresponding masks for labeled images
+│   ├── unlabeled_images/        # Directory for unlabeled images (input for generating pseudo-labels)
+├── checkpoints/                 # Directory where model checkpoints will be saved
+└── results/
+    ├── predictions/             # Directory where predicted masks will be saved
+    └── visualizations/          # Directory for any visualizations (not explicitly used in the code but created)
 ```
 
 
@@ -40,7 +44,7 @@ base_dir = '/home/mhpromit7473/Documents/ISIC_Dataset'  # Change this to your ac
 
 bash
 
-```
+```bash
 python3 melanoma_detection.py
 ```
 This version includes several improvements:
@@ -78,7 +82,7 @@ Here's what we need to do:
 
 Dataset Organization:
 ```angular2html
-Copydataset/
+dataset/
 ├── images/          # Your melanoma images
 ├── masks/           # Your predicted masks
 └── ground_truth/    # ISIC ground truth masks
