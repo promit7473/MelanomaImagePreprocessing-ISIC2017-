@@ -138,9 +138,13 @@ def create_directories(base_dir):
     os.makedirs(os.path.join(base_dir,'results/predictions'), exist_ok=True)
     os.makedirs(os.path.join(base_dir,'results/visualizations'), exist_ok=True)
 
-def save_image(tensor, path):
-    """ Save a tensor as an image. """
-    image = tensor.squeeze().cpu().numpy()  # Remove channels if single-channel
+def save_image(tensor_or_array, path):
+    """ Save a tensor or numpy array as an image. """
+    if isinstance(tensor_or_array, torch.Tensor):
+        image = tensor_or_array.squeeze().cpu().numpy()
+    else:
+        image = tensor_or_array.squeeze()
+    
     image = (image * 255).astype(np.uint8)  # Convert to uint8
     img = Image.fromarray(image)
     img.save(path)
@@ -203,7 +207,8 @@ def main():
 
     best_val_loss = float('inf') 
     num_epochs = 20
-    accumulation_steps = 2  # Gradient accumulation steps ```python
+    accumulation_steps = 2  # Gradient accumulation steps
+
     for epoch in range(num_epochs): 
         print(f"Epoch [{epoch + 1}/{num_epochs}]") 
         model.train() 
@@ -273,7 +278,8 @@ def main():
         with torch.no_grad():  
             for val_images, val_masks in val_loader:
                 val_images, val_masks = val_images.to(device), val_masks.to(device)  
-                preds = (model(val_images) > 0.5).cpu().numpy()
+                outputs = model(val_images)
+                preds = (outputs > 0.5).cpu().numpy()
                 targets = val_masks.cpu().numpy()
 
                 all_preds.append(preds)
@@ -281,14 +287,15 @@ def main():
 
                 # Save predictions as images
                 for i in range(preds.shape[0]):
-                    save_image(preds[i], os.path.join(base_dir, 'results/predictions', f'pred_{len(all_preds)*val_loader.batch_size + i}.png'))
+                    pred_image = preds[i]  # Already a numpy array
+                    save_image(pred_image, os.path.join(base_dir, 'results/predictions', f'pred_{len(all_preds)*val_loader.batch_size + i}.png'))
 
-            # Flatten predictions and targets
-            all_preds = np.concatenate(all_preds).flatten()
-            all_targets = np.concatenate(all_targets).flatten()
+        # Flatten predictions and targets
+        all_preds = np.concatenate(all_preds).flatten()
+        all_targets = np.concatenate(all_targets).flatten()
 
-            # Plot confusion matrix
-            plot_confusion_matrix(all_targets, all_preds)
+        # Plot confusion matrix
+        plot_confusion_matrix(all_targets, all_preds)
 
 if __name__ == '__main__':
-   main()
+    main()
