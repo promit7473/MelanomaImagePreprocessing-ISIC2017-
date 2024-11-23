@@ -12,7 +12,7 @@ Input Image → U-Net → Predicted Mask
 
 Installation: First install the required packages:
 
-```angular2html
+```bash
 pip install torch torchvision opencv-python pillow scikit-learn numpy matplotlib seaborn
 ```
 
@@ -29,7 +29,7 @@ melanoma-pseudo-annotation/
 ├── checkpoints/                 # Directory where model checkpoints will be saved
 └── results/
     ├── predictions/             # Directory where predicted masks will be saved
-    └── visualizations/          # Directory for any visualizations (not explicitly used in the code but created)
+    └── visualizations/          # Directory for any visualizations 
 ```
 
 
@@ -45,7 +45,7 @@ base_dir = '/home/mhpromit7473/Documents/ISIC_Dataset'  # Change this to your ac
 bash
 
 ```bash
-python3 melanoma_detection.py
+python3 enhance.py
 ```
 This version includes several improvements:
 
@@ -75,13 +75,13 @@ What we SHOULD do is evaluate against ground truth. Here's the improved approach
 Melanoma Evaluation with Ground Truth
 
 ```bash
-python3 melanoma_detection_with_ground_truth.py
+python3 enhance.py
 ```
 
 Here's what we need to do:
 
 Dataset Organization:
-```angular2html
+```bash
 dataset/
 ├── images/          # Your melanoma images
 ├── masks/           # Your predicted masks
