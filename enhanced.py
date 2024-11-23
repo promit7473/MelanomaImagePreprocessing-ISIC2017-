@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split
 from PIL import Image
 import matplotlib.pyplot as plt
 
+os.environ['QT_QPA_PLATFORM']='offscreen'
+
 class PseudoAnnotationDataset(Dataset):
     def __init__(self, image_paths, mask_paths=None, pseudo_labels=None, transform=None):
         self.image_paths = image_paths
@@ -149,18 +151,30 @@ def save_image(tensor_or_array, path):
     img = Image.fromarray(image)
     img.save(path)
 
-def plot_confusion_matrix(y_true, y_pred):
-    """ Plot confusion matrix """
+def plot_confusion_matrix(y_true, y_pred, epoch, base_dir):
+    """Plot and save confusion matrix"""
     cm = confusion_matrix(y_true.flatten(), y_pred.flatten())
     disp = ConfusionMatrixDisplay(confusion_matrix=cm)
     disp.plot(cmap='Blues')
-    plt.title('Confusion Matrix')
-    plt.show()
+    plt.title(f'Confusion Matrix - Epoch {epoch+1}')
+    # Save the plot instead of showing it
+    plt.savefig(os.path.join(base_dir, 'results/visualizations', f'confusion_matrix_epoch_{epoch+1}.png'))
+    plt.close()  # Close the figure to free memory
 
 def main():
     # Clear GPU cache
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
+    
+    # show these lines for training start message
+    from datetime import datetime
+    start_time = datetime.now()
+    print("="*50)
+    print(f"Training started at: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Using device: {'CUDA' if torch.cuda.is_available() else 'CPU'}")
+    if torch.cuda.is_available():
+        print(f"GPU Device: {torch.cuda.get_device_name(0)}")
+    print("="*50)
 
     base_dir = '/home/mhpromit7473/Documents/melanoma-pseudo-annotation'
     
@@ -295,7 +309,18 @@ def main():
         all_targets = np.concatenate(all_targets).flatten()
 
         # Plot confusion matrix
-        plot_confusion_matrix(all_targets, all_preds)
+        plot_confusion_matrix(all_targets, all_preds, epoch, base_dir)
+        
+        # Optional: Print validation metrics
+        print(f"Epoch {epoch+1} completed")
+
+    # Add these lines at the end of main()
+    end_time = datetime.now()
+    training_duration = end_time - start_time
+    print("="*50)
+    print(f"Training completed at: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Total training time: {training_duration}")
+    print("="*50)	
 
 if __name__ == '__main__':
     main()
