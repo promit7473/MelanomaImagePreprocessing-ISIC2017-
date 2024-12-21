@@ -1,200 +1,57 @@
-# Melanoma Detection with Pseudo-Annotations
+# Melanoma Segmentation Using Pseudo Annotations
 
-A deep learning project for melanoma detection using U-Net architecture with pseudo-labeling technique for semi-supervised learning. This implementation uses PyTorch and is designed to work with both labeled and unlabeled melanoma images.
+A deep learning approach for melanoma segmentation using pseudo annotations and semi-supervised learning. This project is implemented as a Kaggle notebook utilizing the ISIC 2017 dataset.
 
-## Project Overview
+## Overview
 
+![Project Pipeline](docs/pipeline.png)
 
-```
-Input Image → U-Net → Predicted Mask
-                         ↓
-               Compare with Ground Truth
-                         ↓
-                  Calculate Metrics
-```
-
-
-This project implements a semi-supervised learning approach for melanoma detection using:
+This notebook implements a semi-supervised learning pipeline for melanoma segmentation with the following key components:
+- DullRazor preprocessing for hair removal
 - U-Net architecture for image segmentation
-- Pseudo-labeling technique for leveraging unlabeled data
-- Confidence-based label generation
-- Gradient accumulation for handling larger batch sizes
-- Automated model checkpointing
+- Pseudo-label generation for unlabeled data
+- Comprehensive evaluation metrics
 
-## Directory Structure
+## Dataset
 
-```
-melanoma-pseudo-annotation/
-├── data/
-│   ├── labeled_images/     # Labeled melanoma images
-│   ├── labeled_masks/      # Ground truth segmentation masks
-│   └── unlabeled_images/   # Unlabeled melanoma images
-├── checkpoints/            # Saved model checkpoints
-├── results/
-│   ├── predictions/        # Model predictions
-│   └── visualizations/     # Performance visualizations
-├── enhanced.py            # Main implementation file
-├── requirements.txt       # Project dependencies
-└── README.md             # This file
-```
-
-## Requirements
+The project uses the ISIC 2017 dataset, which should be structured in your Kaggle environment as follows:
 
 ```
-numpy
-torch
-torchvision
-scikit-learn
-pillow
-matplotlib
+../input/isic-2017/
+    ├── ISIC-2017_Training_Data/
+    │   └── ISIC-2017_Training_Data/
+    └── ISIC-2017_Training_Part1_GroundTruth/
+        └── ISIC-2017_Training_Part1_GroundTruth/
 ```
 
-Install dependencies using:
-```bash
-pip install -r requirements.txt
-```
+## Implementation Details
 
-## Dataset Preparation
-
-1. Organize your dataset following the directory structure:
-   - Place labeled melanoma images in `data/labeled_images/`
-   - Place corresponding segmentation masks in `data/labeled_masks/`
-   - Place unlabeled images in `data/unlabeled_images/`
-
-2. Supported image formats:
-   - Images: PNG format
-   - Masks: Binary PNG format (0 for background, 255 for melanoma)
-   - Recommended image size: 256x256 pixels
-
-## Model Architecture
-
-The implementation uses a U-Net architecture with:
-- Encoder: 4 encoding blocks with double convolution
-- Bottleneck layer
-- Decoder: 4 decoding blocks with skip connections
-- Input channels: 3 (RGB)
-- Output channels: 1 (binary mask)
-- Batch normalization and ReLU activation
-
-## Training Process
-
-The training process includes:
-
-1. Initial training on labeled data
-2. Pseudo-label generation:
-   - Model predicts on unlabeled data
-   - Confidence threshold filtering (≥ 0.7)
-   - High-confidence predictions become pseudo-labels
-3. Additional training with pseudo-labeled data
-4. Model evaluation and checkpoint saving
-
-### Hyperparameters
-
-- Learning rate: 1e-4
-- Batch size: 16
-- Number of epochs: 20
-- Gradient accumulation steps: 2
-- Confidence threshold: 0.7
-- Test split ratio: 0.2
+The notebook contains:
+1. Data preprocessing using DullRazor
+2. U-Net model implementation
+3. Semi-supervised training pipeline
+4. Pseudo-label generation and validation
+5. Metrics calculation and visualization
 
 ## Usage
 
-1. Prepare your dataset as described above
+1. Upload the notebook to Kaggle
+2. Add the ISIC 2017 dataset to your notebook
+3. Run all cells sequentially
 
-2. Run the training script:
-```bash
-python3 enhanced.py
-```
+## Requirements
 
-3. Monitor the training process:
-   - Batch-wise loss updates
-   - Epoch average loss
-   - Number of confident pseudo-labels generated
-   - Model checkpoint saves
-   - Confusion matrix visualization
-
-## Model Outputs
-
-The training process generates:
-1. Trained model checkpoints in `checkpoints/`
-2. Prediction images in `results/predictions/`
-   - Validation set predictions
-   - Pseudo-label visualizations
-3. Performance visualizations in `results/visualizations/`
-   - Confusion matrices
-   - Other metrics plots
-
-## Performance Metrics
-
-The model's performance is evaluated using:
-- Binary Cross-Entropy Loss
-- Confusion Matrix
-- Prediction visualizations
-
-## File Descriptions
-
-- `enhanced.py`: Main implementation file containing:
-  - Dataset class for handling labeled and pseudo-labeled data
-  - U-Net model implementation
-  - Training and evaluation loops
-  - Pseudo-label generation logic
-  - Utility functions for saving results
-
-## Additional Features
-
-1. Automatic directory creation
-2. GPU support with automatic detection
-3. Memory optimization through gradient accumulation
-4. Comprehensive logging
-5. Visualization tools
-6. Model checkpointing
-
-## Best Practices
-
-1. Data Preparation:
-   - Ensure images are properly preprocessed
-   - Verify mask-image pairs match
-   - Use consistent naming conventions
-
-2. Training:
-   - Monitor GPU memory usage
-   - Check pseudo-label quality periodically
-   - Save intermediate results
-
-3. Evaluation:
-   - Review generated pseudo-labels
-   - Analyze confusion matrices
-   - Inspect prediction visualizations
-
-## Troubleshooting
-
-Common issues and solutions:
-
-1. CUDA out of memory:
-   - Reduce batch size
-   - Increase gradient accumulation steps
-   - Reduce image size
-
-2. Poor pseudo-label quality:
-   - Increase confidence threshold
-   - Improve initial training
-   - Check data normalization
-
-3. Slow training:
-   - Enable GPU support
-   - Optimize data loading
-   - Adjust batch size
-
-## Contributing
-
-Feel free to contribute to this project by:
-1. Opening issues for bugs or feature requests
-2. Submitting pull requests with improvements
-3. Sharing your experience and results
+The notebook utilizes standard Kaggle GPU environment with:
+- PyTorch
+- OpenCV
+- scikit-learn
+- PIL
+- matplotlib
+- tqdm
 
 ## License
 
-This project is available under the MIT License.
+[MIT License](LICENSE)
 
 
 ## Contact
