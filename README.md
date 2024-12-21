@@ -6,11 +6,14 @@ A deep learning approach for melanoma segmentation using pseudo annotations and 
 
 ![Model](images/model_diagram.png)
 
-This notebook implements a semi-supervised learning pipeline for melanoma segmentation with the following key components:
-- DullRazor preprocessing for hair removal
-- U-Net architecture for image segmentation
-- Pseudo-label generation for unlabeled data
-- Comprehensive evaluation metrics
+This notebook implements a semi-supervised learning pipeline for melanoma image segmentation, leveraging both labeled and unlabeled data to improve model performance.
+
+## Key Features
+Hair removal using DullRazor algorithm
+U-Net architecture for initial training
+Pseudo-labeling for unlabeled data
+High-confidence filtering
+Combined training approach
 
 ## Dataset
 
