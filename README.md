@@ -44,13 +44,9 @@ The notebook contains:
 
 ## Requirements
 
-The notebook utilizes standard Kaggle GPU environment with:
-- PyTorch
-- OpenCV
-- scikit-learn
-- PIL
-- matplotlib
-- tqdm
+```bash
+pip install requirements.txt
+```
 
 ## License
 
