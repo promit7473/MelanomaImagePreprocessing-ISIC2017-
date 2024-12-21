@@ -4,7 +4,7 @@ A deep learning approach for melanoma segmentation using pseudo annotations and 
 
 ## Overview
 
-![Project Pipeline](docs/pipeline.png)
+![Model](images/model_diagram.png)
 
 This notebook implements a semi-supervised learning pipeline for melanoma segmentation with the following key components:
 - DullRazor preprocessing for hair removal
